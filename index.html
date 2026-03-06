@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendora | Indian Marketplace</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* --- CSS VARIABLES & THEME --- */
+        :root {
+            --saffron: #FF9933;
+            --white: #FFFFFF;
+            --green: #138808;
+            --blue: #000080;
+            --violet: #8A2BE2;
+            --peach: #FFDAB9;
+            --maroon: #800000;
+            --teal: #008080;
+            --bg-gradient: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            --card-gradient: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);
+            --primary-gradient: linear-gradient(to right, #ff512f, #dd2476);
+            --shadow: 0 10px 20px rgba(0,0,0,0.1);
+            --radius: 15px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        body { background: #f3f4f6; color: #333; overflow-x: hidden; }
+
+        /* --- UTILITIES --- */
+        .hidden { display: none !important; }
+        .btn {
+            padding: 10px 20px; border: none; border-radius: 50px; cursor: pointer;
+            font-weight: bold; transition: transform 0.2s, box-shadow 0.2s;
+            color: white;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .btn-primary { background: var(--primary-gradient); }
+        .btn-secondary { background: var(--teal); }
+        .btn-danger { background: #ff4757; }
+        .btn-whatsapp { background: #25D366; }
+
+        /* --- HEADER --- */
+        header {
+            background: white; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 1000;
+        }
+        .logo { font-size: 1.8rem; font-weight: 800; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .nav-links button { margin-left: 10px; }
+
+        /* --- LOGIN SECTION --- */
+        #login-section {
+            height: 100vh; display: flex; justify-content: center; align-items: center;
+            background: linear-gradient(45deg, var(--saffron), var(--violet));
+        }
+        .login-card {
+            background: white; padding: 40px; border-radius: 20px; width: 90%; max-width: 400px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2); text-align: center;
+        }
+        .login-card input {
+            width: 100%; padding: 12px; margin: 10px 0; border: 2px solid #eee; border-radius: 10px; outline: none;
+        }
+        .login-card input:focus { border-color: var(--violet); }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white; padding: 60px 5%; text-align: center; border-radius: 0 0 50px 50px;
+            margin-bottom: 30px;
+        }
+        .search-bar {
+            margin-top: 20px; display: flex; justify-content: center; gap: 10px;
+        }
+        .search-bar input {
+            padding: 15px; width: 60%; border-radius: 30px; border: none; outline: none; font-size: 1rem;
+        }
+
+        /* --- MARKETPLACE GRID --- */
+        .container { padding: 20px 5%; max-width: 1400px; margin: 0 auto; }
+        .section-title { margin-bottom: 20px; color: var(--maroon); font-size: 1.5rem; border-left: 5px solid var(--saffron); padding-left: 10px; }
+        
+        .product-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px;
+        }
+        .product-card {
+            background: white; border-radius: var(--radius); overflow: hidden;
+            box-shadow: var(--shadow); transition: transform 0.3s; position: relative;
+        }
+        .product-card:hover { transform: translateY(-5px); }
+        .product-img { width: 100%; height: 200px; object-fit: cover; background: #eee; }
+        .product-info { padding: 15px; }
+        .product-price { font-size: 1.2rem; font-weight: bold; color: var(--green); }
+        .seller-info { font-size: 0.8rem; color: #777; margin-top: 5px; }
+        .card-actions { display: flex; gap: 5px; margin-top: 15px; }
+        .card-actions button { flex: 1; font-size: 0.8rem; padding: 8px; }
+
+        /* --- DASHBOARDS --- */
+        .dashboard-layout { display: grid; grid-template-columns: 250px 1fr; min-height: 80vh; }
+        .sidebar { background: white; padding: 20px; border-right: 1px solid #eee; }
+        .sidebar ul { list-style: none; }
+        .sidebar li { padding: 15px; cursor: pointer; border-radius: 10px; margin-bottom: 5px; transition: 0.2s; }
+        .sidebar li:hover, .sidebar li.active { background: var(--peach); color: var(--maroon); font-weight: bold; }
+        
+        .dash-content { padding: 30px; background: #f8f9fa; }
+        
+        /* Forms */
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;
+        }
+
+        /* Tables */
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: var(--shadow); }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: var(--violet); color: white; }
+
+        /* Notification Toast */
+        #toast {
+            visibility: hidden; min-width: 250px; background-color: #333; color: #fff; text-align: center; border-radius: 50px;
+            padding: 16px; position: fixed; z-index: 1001; left: 50%; bottom: 30px; transform: translateX(-50%);
+        }
+        #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+
+        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .dashboard-layout { grid-template-columns: 1fr; }
+            .sidebar { display: flex; overflow-x: auto; padding: 10px; }
+            .sidebar li { white-space: nowrap; margin-right: 10px; }
+            .search-bar input { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast">Notification Message</div>
+
+    <!-- LOGIN SECTION -->
+    <section id="login-section">
+        <div class="login-card">
+            <h1 class="logo" style="margin-bottom: 20px;">Vendora</h1>
+            <h3>Welcome Back</h3>
+            <p style="color: #666; margin-bottom: 20px;">Login as Admin, Seller, or Customer</p>
+            <form id="loginForm">
+                <input type="text" id="loginName" placeholder="Full Name" required>
+                <input type="email" id="loginEmail" placeholder="Email Address" required>
+                <input type="tel" id="loginPhone" placeholder="Phone Number" required>
+                <select id="loginRole" style="width: 100%; padding: 12px; margin: 10px 0; border-radius: 10px; border: 2px solid #eee;">
+                    <option value="customer">Customer</option>
+                    <option value="seller">Seller</option>
+                    <option value="admin">Admin</option>
+                </select>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+            </form>
+            <p style="margin-top: 15px; font-size: 0.8rem; color: #888;">(First time? Just login, you'll be registered automatically)</p>
+        </div>
+    </section>
+
+    <!-- MAIN APP WRAPPER -->
+    <div id="app-wrapper" class="hidden">
+        
+        <!-- NAVBAR -->
+        <header>
+            <div class="logo">Vendora</div>
+            <div class="nav-links">
+                <span id="user-display" style="margin-right: 15px; font-weight: bold;"></span>
+                <button class="btn btn-secondary" onclick="logout()">Logout</button>
+            </div>
+        </header>
+
+        <!-- CUSTOMER VIEW -->
+        <div id="customer-view" class="hidden">
+            <div class="hero">
+                <h1>Connecting Indian Buyers & Sellers</h1>
+                <p>Discover unique products from local sellers</p>
+                <div class="search-bar">
+                    <input type="text" id="searchInput" placeholder="Search for products...">
+                    <button class="btn btn-primary" onclick="searchProducts()"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+
+            <div class="container">
+                <h2 class="section-title">Trending Products</h2>
+                <div class="product-grid" id="marketplace-grid">
+                    <!-- Products injected here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- SELLER DASHBOARD -->
+        <div id="seller-view" class="hidden">
+            <div class="dashboard-layout">
+                <div class="sidebar">
+                    <ul>
+                        <li onclick="showSellerTab('upload')" class="active"><i class="fas fa-plus-circle"></i> Upload Product</li>
+                        <li onclick="showSellerTab('my-products')"><i class="fas fa-box"></i> My Products</li>
+                        <li onclick="showSellerTab('orders')"><i class="fas fa-shopping-cart"></i> Orders</li>
+                    </ul>
+                </div>
+                <div class="dash-content">
+                    <!-- Upload Tab -->
+                    <div id="seller-upload" class="seller-tab">
+                        <h2 class="section-title">Upload New Product</h2>
+                        <form id="uploadForm" style="background: white; padding: 20px; border-radius: 10px;">
+                            <div class="form-group">
+                                <label>Product Name</label>
+                                <input type="text" id="prodName" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea id="prodDesc" rows="3" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Price (₹)</label>
+                                <input type="number" id="prodPrice" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Delivery Charges (₹)</label>
+                                <input type="number" id="prodDelivery" value="50" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Image URL (or leave blank for placeholder)</label>
+                                <input type="text" id="prodImg" placeholder="https://example.com/image.jpg">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Upload Product</button>
+                        </form>
+                    </div>
+
+                    <!-- My Products Tab -->
+                    <div id="seller-products" class="seller-tab hidden">
+                        <h2 class="section-title">My Products</h2>
+                        <div id="seller-products-list"></div>
+                    </div>
+
+                    <!-- Orders Tab -->
+                    <div id="seller-orders" class="seller-tab hidden">
+                        <h2 class="section-title">Incoming Orders</h2>
+                        <div id="seller-orders-list"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ADMIN DASHBOARD -->
+        <div id="admin-view" class="hidden">
+            <div class="dashboard-layout">
+                <div class="sidebar">
+                    <ul>
+                        <li onclick="showAdminTab('overview')" class="active"><i class="fas fa-chart-line"></i> Overview</li>
+                        <li onclick="showAdminTab('users')"><i class="fas fa-users"></i> Users</li>
+                        <li onclick="showAdminTab('products')"><i class="fas fa-box-open"></i> Products & Commission</li>
+                        <li onclick="showAdminTab('orders')"><i class="fas fa-shopping-bag"></i> All Orders</li>
+                        <li onclick="showAdminTab('search-history')"><i class="fas fa-history"></i> Search History</li>
+                    </ul>
+                </div>
+                <div class="dash-content">
+                    <!-- Overview -->
+                    <div id="admin-overview" class="admin-tab">
+                        <h2 class="section-title">Platform Overview</h2>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                            <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: var(--shadow);">
+                                <h3>Total Users</h3>
+                                <p id="stat-users" style="font-size: 2rem; color: var(--blue);">0</p>
+                            </div>
+                            <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: var(--shadow);">
+                                <h3>Total Products</h3>
+                                <p id="stat-products" style="font-size: 2rem; color: var(--saffron);">0</p>
+                            </div>
+                            <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: var(--shadow);">
+                                <h3>Total Orders</h3>
+                                <p id="stat-orders" style="font-size: 2rem; color: var(--green);">0</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Users -->
+                    <div id="admin-users" class="admin-tab hidden">
+                        <h2 class="section-title">All Users</h2>
+                        <table id="admin-users-table">
